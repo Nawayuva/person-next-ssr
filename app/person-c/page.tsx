@@ -1,36 +1,35 @@
-'use client'
+// pages/people.tsx
+
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Person } from '../models/person'; // Adjust the import path as necessary
+import { getPeople } from '../lib/api'; // Import the externalized function
 
 const PeoplePage = () => {
   const [people, setPeople] = useState<Person[]>([]);
-  const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/person";
-  const bearerToken = process.env.NEXT_PUBLIC_API_BEARER_TOKEN || "dummy"; // Ensure this is set in your .env (not .env.local since it's a server component)
-  console.log(apiURL, bearerToken);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPeople = async () => {
-      
-      const response = await fetch(apiURL, {
-        method: 'GET',
-        headers: new Headers({
-          'Authorization': `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json'
-        }),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to fetch people');
-        return;
+    const fetchData = async () => {
+      const data = await getPeople();
+      if (data) {
+        setPeople(data);
+      } else {
+        setError('Failed to load data.');
       }
-
-      const data: Person[] = await response.json();
-      setPeople(data);
     };
 
-    fetchPeople();
-  }, [bearerToken]);
+    fetchData();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!people.length) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto">

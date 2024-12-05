@@ -1,30 +1,15 @@
+// app/people/page.tsx or pages/people.tsx (depending on your Next.js version)
+
 'use server';
 
-import { Person } from '../models/person'; // Adjust the import path as necessary
+import { getPeople } from '../lib/api'; // Adjust the import path as necessary
 
-const PeoplePage = async () => {
-  //apiURL has to be absolute URL, relative URL will not work in server components
-  // Ensure this is set in your .env (not .env.local since it's a server component)
-  //since this will be deployed on AWS Amplify, we need to set the environment variables in the AWS Amplify console
-  const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/person";
-  const bearerToken = process.env.NEXT_API_BEARER_TOKEN || "dummy"; // Ensure this is set in your .env (not .env.local since it's a server component)
+export default async function PeoplePage() {
+  const people = await getPeople();
 
-  // Fetch people data
-  const response = await fetch(apiURL, {
-    method: 'GET',
-    cache: 'no-cache',
-    headers: {
-      'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    console.error('Failed to fetch people');
+  if (!people) {
     return <div>Failed to load data.</div>;
   }
-
-  const people: Person[] = await response.json();
 
   return (
     <div className="container mx-auto">
@@ -51,6 +36,4 @@ const PeoplePage = async () => {
       </table>
     </div>
   );
-};
-
-export default PeoplePage;
+}
