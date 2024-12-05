@@ -5,6 +5,8 @@ import { Person } from '../models/person'; // Adjust the path as necessary
 export const getPeople = async (): Promise<Person[] | null> => {
   const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/person";
   const bearerToken = process.env.NEXT_PUBLIC_API_BEARER_TOKEN || "dummy";
+  console.log('apiURL:', apiURL);
+  console.log('bearerToken:', bearerToken);
 
   try {
     const response = await fetch(apiURL, {
