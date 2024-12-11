@@ -1,4 +1,4 @@
-// pages/index.tsx
+// page.tsx 
 import Link from 'next/link';
 
 const HomePage = () => {
