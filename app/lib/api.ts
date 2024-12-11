@@ -1,5 +1,3 @@
-// lib/api.ts
-
 import { Person } from '../models/person'; // Adjust the path as necessary
 
 export const getPeople = async (): Promise<Person[] | null> => {
@@ -13,14 +11,20 @@ export const getPeople = async (): Promise<Person[] | null> => {
       method: 'GET',
       cache: 'no-cache',
       headers: {
-        // 'Authorization': `Bearer ${bearerToken}`,
         'x-api-key': bearerToken,
         'Content-Type': 'application/json',
       },
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch people');
+      const errorText = await response.text();
+      console.error('Failed to fetch people. Server response:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers),
+        body: errorText
+      });
+      console.error(new Error().stack);
       return null;
     }
 
@@ -28,6 +32,14 @@ export const getPeople = async (): Promise<Person[] | null> => {
     return people;
   } catch (error) {
     console.error('An error occurred while fetching people:', error);
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Stack trace:', error.stack);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     return null;
   }
 };
+
