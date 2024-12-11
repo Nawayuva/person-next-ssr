@@ -1,4 +1,4 @@
-# Next.js 14 Server-Side Rendering Example
+# Next.js 15 Server-Side Rendering Example
 
 ## Introduction
 
@@ -55,7 +55,7 @@ Visit `http://localhost:3000` in your browser to see the application in action. 
 4. **Step 3: Configure Build Settings .**
 Review Build Settings: AWS Amplify automatically detects that you are deploying a Next.js application and provides a default build configuration. You can review and adjust these settings as necessary.
 
-Customize the Build Image (for Next.js 14): Navigate to **Build settings > Build Image Settings** section in the AWS Amplify Console. Click on Edit and change the build image version to "`node:18.14.2`" or a later version that supports Next.js 14. Click Save to confirm the changes.
+Customize the Build Image (for Next.js 14): Navigate to **Build settings > Build Image Settings** section in the AWS Amplify Console. Click on Edit and change the build image version to "`node:20.17.0`" or a later version that supports Next.js 14. Click Save to confirm the changes.
 
 Adjust Environment Variables: In the AWS Amplify Console, find the Environment variables section during the setup or in the **App settings > Environment** variables. Click Manage variables to add, modify, or remove environment variables. Here, you'll input the key-value pairs that were previously in your .env.local file, ensuring that your application has access to necessary configuration without relying on the file directly. This approach enhances security by keeping sensitive information out of your repository.
 
