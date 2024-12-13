@@ -1,6 +1,8 @@
-import { Person } from '../models/person'; // Adjust the path as necessary
+'use server'
 
-export const getPeople = async (): Promise<Person[] | null> => {
+import { Person } from '../models/person';
+
+export async function getPeople(): Promise<Person[] | null> {
   const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/person";
   const bearerToken = process.env.NEXT_PUBLIC_API_BEARER_TOKEN || "dummy";
   console.log('apiURL:', apiURL);
@@ -41,5 +43,5 @@ export const getPeople = async (): Promise<Person[] | null> => {
     }
     return null;
   }
-};
+}
 

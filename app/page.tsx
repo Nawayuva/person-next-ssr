@@ -1,34 +1,60 @@
-// page.tsx 
 import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ShieldCheck, Server, Cpu } from 'lucide-react';
+import UserCard from './components/UserCard';
 
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-2xl font-bold my-4">Next.js Rendering Strategies</h1>
-      <ul className="list-none">
-        <li className="mb-2">
-          <Link href="/person-s" className="text-blue-500 hover:text-blue-700">
-            Server-Side Rendering Page
-          </Link>
-        </li>
-        <li className="mb-2" >
-          <Link href="/person-c" className="text-blue-500 hover:text-blue-700">
-            Client-Side Rendering Page
-          </Link>
-        </li>
-        <li className="mb-2">
-          <Link href="/api/person" className="text-blue-500 hover:text-blue-700">
-            GET API for People
-          </Link>
-        </li>
-      </ul>
+    <div className="space-y-8 max-w-2xl mx-auto">
+      <UserCard />
+      
+      <Alert>
+        <ShieldCheck className="h-4 w-4" />
+        <AlertTitle>Authenticated Access Only</AlertTitle>
+        <AlertDescription>
+          This page is secured using AWS Cognito. Only authenticated users can access the content.
+        </AlertDescription>
+      </Alert>
 
-      <footer className="absolute bottom-0 w-full text-center pb-4">
-        <p>Authored by Callum Bir</p>
-        <Link href="https://github.com/gocallum" className="text-blue-500 hover:text-blue-700">Visit my GitHub</Link>
-      </footer>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">Application Architecture</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-start space-x-2">
+            <Cpu className="h-5 w-5 mt-0.5 flex-shrink-0" />
+            <p>
+              The View Person List now renders content on the client side, providing a responsive and interactive user experience.
+            </p>
+          </div>
+          <div className="flex items-start space-x-2">
+            <Server className="h-5 w-5 mt-0.5 flex-shrink-0" />
+            <p>
+              APIs are securely stored on the server. We use server actions for data fetching, eliminating direct API calls from the client and enhancing security.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-6">
+          <nav className="space-y-2">
+            <Button asChild variant="ghost" className="w-full justify-start">
+              <Link href="/person-c">
+                View Person List
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" className="w-full justify-start">
+              <Link href="/api/person">
+                API Documentation
+              </Link>
+            </Button>
+          </nav>
+        </CardContent>
+      </Card>
     </div>
   );
-};
+}
 
-export default HomePage;

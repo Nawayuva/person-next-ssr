@@ -1,61 +1,65 @@
-// pages/people.tsx
+'use client'
 
-'use client';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../hooks/useAuth';
+import { usePeople } from '../../hooks/usePeople';
+import { PeopleTable } from '@/app/components/PeopleTable';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { signOut } from 'aws-amplify/auth';
+import UserCard from '../components/UserCard';
 
-import { useEffect, useState } from 'react';
-import { Person } from '../models/person'; // Adjust the import path as necessary
-import { getPeople } from '../lib/api'; // Import the externalized function
+export default function PersonClientPage() {
+  const router = useRouter();
+  const { user, isLoading: isAuthLoading, error: authError } = useAuth();
+  const { people, isLoading: isPeopleLoading, error: peopleError } = usePeople();
 
-const PeoplePage = () => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/'); // Redirect to home page after sign out
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getPeople();
-      if (data) {
-        setPeople(data);
-      } else {
-        setError('Failed to load data.');
-      }
-    };
+  if (isAuthLoading) return <div>Loading authentication...</div>;
+  if (authError) return <div>Authentication error: {authError.message}</div>;
 
-    fetchData();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
-
-  if (error) {
-    return <div>{error}</div>;
+  if (!user) {
+    return (
+      <Card className="w-[350px] mx-auto mt-10">
+        <CardHeader>
+          <CardTitle>Sign In</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Authenticator>
+            {({ user }) => (
+              <div>
+                <h1 className="text-xl mb-4">Welcome, {user?.username}!</h1>
+                <Button onClick={handleSignOut}>Sign out</Button>
+              </div>
+            )}
+          </Authenticator>
+        </CardContent>
+      </Card>
+    );
   }
 
-  if (!people.length) {
-    return <div>Loading...</div>;
-  }
+  if (isPeopleLoading) return <div>Loading people data...</div>;
+  if (peopleError) return <div>Error loading people data: {peopleError.message}</div>;
+  if (!people) return <div>No people found</div>;
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4">People</h1>
-      <table className="table-auto w-full">
-        <thead className="text-left">
-          <tr>
-            <th className="p-2">First Name</th>
-            <th className="p-2">Last Name</th>
-            <th className="p-2">Phone</th>
-            <th className="p-2">Date of Birth</th>
-          </tr>
-        </thead>
-        <tbody>
-          {people.map((person, index) => (
-            <tr key={index} className="odd:bg-gray-100">
-              <td className="p-2">{person.firstName}</td>
-              <td className="p-2">{person.lastName}</td>
-              <td className="p-2">{person.phone}</td>
-              <td className="p-2">{person.dob}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container mx-auto px-4">          
+    <h1>People (Client-side Rendered)</h1>
+
+      <UserCard />
+
+      <PeopleTable people={people} />
     </div>
   );
-};
+}
 
-export default PeoplePage;
