@@ -6,7 +6,7 @@ frontend:
         - npm ci --cache .npm --prefer-offline --legacy-peer-deps
     build:
       commands:
-        - env | grep -e NEXT_PUBLIC_API_URL -e NEXT_PUBLIC_API_BEARER_TOKEN >> .env.production
+        - env | grep -e USER_POOL_ID -e USER_POOL_CLIENT_ID -e USER_POOL_ENDPOINT -e API_URL -e API_BEARER_TOKEN >> .env.production
         - NODE_ENV=production npx next build
   artifacts:
     baseDirectory: .next

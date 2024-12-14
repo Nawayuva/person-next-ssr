@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Person } from '@/app/models/person';
-import { getPeople } from '@/app/lib/api';
+import { getPeople } from '@/app/actions/api';
 
 export function usePeople() {
   const [people, setPeople] = useState<Person[] | null>(null);
