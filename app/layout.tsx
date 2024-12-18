@@ -1,4 +1,5 @@
 import { AuthProvider } from './components/AuthProvider';
+
 import { NavBar } from './components/NavBar';
 import { Footer } from './components/Footer';
 import { Inter } from 'next/font/google';
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={`${inter.className} flex flex-col min-h-full`}>
+
         <AuthProvider>
           <NavBar />
           <div className="flex-grow">
@@ -23,6 +25,7 @@ export default function RootLayout({
           </div>
           <Footer />
         </AuthProvider>
+
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ function AuthProviderComponent({ children }: { children: React.ReactNode }) {
 }
 
 export const AuthProvider = withAuthenticator(AuthProviderComponent, {
-  signUpAttributes: ['given_name', 'family_name'],
+  signUpAttributes: ['given_name', 'family_name', 'email'],
   formFields: {
     signUp: {
       given_name: { label: 'First Name', placeholder: 'Enter your first name', isRequired: true },

@@ -6,6 +6,14 @@
   --foreground-rgb: 0, 0, 0;
 }
 
+button, input[type="submit"] {
+  appearance: none; /* Standard property */
+  -webkit-appearance: none; /* WebKit (Chrome, Safari) */
+  -moz-appearance: none; /* Mozilla (Firefox) */
+}
+
+
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
